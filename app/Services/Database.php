@@ -2,18 +2,50 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/bootstrap.php';
+namespace App\Services;
 
-return [
-    'app_name' => $_ENV['APP_NAME'] ?? 'CupCake Gourmet',
+use PDO;
+use PDOException;
+use RuntimeException;
 
-    'db' => [
-        'host' => $_ENV['DB_HOST'] ?? '127.0.0.1',
-        'port' => $_ENV['DB_PORT'] ?? '3306',
-        'name' => $_ENV['DB_NAME'] ?? 'cupcake_gourmet',
-        'user' => $_ENV['DB_USER'] ?? 'root',
-        'pass' => $_ENV['DB_PASS'] ?? '',
-        'charset' => 'utf8mb4',
-    ],
-];
+class Database
+{
+    private static ?PDO $connection = null;
 
+    public static function getConnection(): PDO
+    {
+        if (self::$connection === null) {
+            $config = require dirname(__DIR__, 2) . '/config/database.php';
+            $db = $config['db'];
+
+            $dsn = sprintf(
+                'mysql:host=%s;port=%s;dbname=%s;charset=%s',
+                $db['host'],
+                $db['port'],
+                $db['name'],
+                $db['charset']
+            );
+
+            try {
+                self::$connection = new PDO(
+                    $dsn,
+                    $db['user'],
+                    $db['pass'],
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                    ]
+                );
+            } catch (PDOException $exception) {
+                throw new RuntimeException(
+                    'Não foi possível conectar ao banco de dados.',
+                    0,
+                    $exception
+                );
+            }
+        }
+
+        return self::$connection;
+    }
+}
