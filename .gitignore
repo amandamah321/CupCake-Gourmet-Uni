@@ -1,0 +1,35 @@
+# Dependência do Composer
+/vendor/
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# Logs
+/storage/logs/*
+!/storage/logs/.gitkeep
+/logs/
+*.log
+
+# Arquivos temporários
+/tmp/
+/temp/
+*.tmp
+*.cache
+*~
+
+# Arquivos enviados pelos user
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores e IDEs
+.idea/
+.vscode/
