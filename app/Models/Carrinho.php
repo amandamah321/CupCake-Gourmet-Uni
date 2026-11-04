@@ -16,9 +16,7 @@ final class Carrinho
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Busca um carrinho pelo seu ID.
-     */
+    //Buscar um carrinho pelo id
     public function buscarPorId(int $id): ?array
     {
         $sql = '
@@ -33,9 +31,7 @@ final class Carrinho
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Busca o carrinho associado a um cliente.
-     */
+    //Buscar um carrinho associado a um cliete
     public function buscarPorCliente(int $idCliente): ?array
     {
         $sql = '
@@ -52,9 +48,7 @@ final class Carrinho
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Cria um carrinho para um cliente ou visitante.
-     */
+    //Criar  um carrinho para um cliente ou visitante
     public function criar(?int $idCliente = null): int
     {
         $sql = '
@@ -68,9 +62,7 @@ final class Carrinho
         return (int) $this->db->lastInsertId();
     }
 
-    /**
-     * Atualiza a data de modificação do carrinho.
-     */
+    //atualizar a data de modificação do carrinho
     public function atualizar(int $id): bool
     {
         $sql = '

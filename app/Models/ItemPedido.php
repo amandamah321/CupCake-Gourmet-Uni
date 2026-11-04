@@ -16,9 +16,7 @@ final class ItemPedido
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Lista todos os produtos de um pedido.
-     */
+    //Listar todos os produtos de um carrinho
     public function todosPorPedido(int $idPedido): array
     {
         $sql = '
@@ -41,9 +39,7 @@ final class ItemPedido
         return $stmt->fetchAll();
     }
 
-    /**
-     * Busca um item específico de um pedido.
-     */
+    //buscar um produto especifico
     public function buscarPorId(int $id): ?array
     {
         $sql = '
@@ -64,9 +60,7 @@ final class ItemPedido
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Registra um produto em um pedido.
-     */
+    //Registrar um profuto a um pedido
     public function adicionar(
         int $idPedido,
         int $idProduto,

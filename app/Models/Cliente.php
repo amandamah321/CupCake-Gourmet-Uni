@@ -16,9 +16,7 @@ final class Cliente
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Retorna todos os clientes cadastrados.
-     */
+    //Mostrar TODOS os clientes cadastrados
     public function todos(): array
     {
         $sql = '
@@ -30,9 +28,7 @@ final class Cliente
         return $this->db->query($sql)->fetchAll();
     }
 
-    /**
-     * Busca um cliente pelo ID.
-     */
+    //Buscar o cliente pelo o Id
     public function buscarPorId(int $id): ?array
     {
         $sql = '
@@ -47,9 +43,7 @@ final class Cliente
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Busca um cliente pelo endereço de e-mail.
-     */
+    //Buscar pelo email
     public function buscarPorEmail(string $email): ?array
     {
         $sql = '
@@ -64,9 +58,7 @@ final class Cliente
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Cadastra um novo cliente.
-     */
+    //cadastrar um cliente
     public function criar(
         string $nome,
         string $email,

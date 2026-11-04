@@ -16,9 +16,7 @@ final class Produto
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Retorna todos os produtos ativos.
-     */
+   //Voltar pedidos ativos
     public function todos(): array
     {
         $sql = '
@@ -40,9 +38,7 @@ final class Produto
         return $this->db->query($sql)->fetchAll();
     }
 
-    /**
-     * Busca um produto pelo seu ID.
-     */
+    //Buscar produto por ID
     public function buscarPorId(int $id): ?array
     {
         $sql = '
@@ -67,9 +63,7 @@ final class Produto
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Retorna produtos de uma categoria.
-     */
+    //buscar pordutos por categoria
     public function porCategoria(int $idCategoria): array
     {
         $sql = '
@@ -92,9 +86,7 @@ final class Produto
         return $stmt->fetchAll();
     }
 
-    /**
-     * Pesquisa produtos pelo nome.
-     */
+    //Pesquisar produto pelo nome
     public function buscarPorNome(string $nome): array
     {
         $sql = '

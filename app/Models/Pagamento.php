@@ -16,10 +16,7 @@ final class Pagamento
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Registra o resultado de um pagamento simulado.
-     * Nenhum dado de cartão é armazenado.
-     */
+    //Registrar o resultado do pagamento (nao armazena dados do cartao)
     public function registrar(
         int $idPedido,
         string $metodo,
@@ -51,9 +48,7 @@ final class Pagamento
         ]);
     }
 
-    /**
-     * Busca o pagamento associado a um pedido.
-     */
+    //Buscar um pagamento de um pedido
     public function porPedido(int $idPedido): ?array
     {
         $sql = '

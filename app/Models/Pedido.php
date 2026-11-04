@@ -16,9 +16,7 @@ final class Pedido
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Lista todos os pedidos.
-     */
+    //Listar todos os pedidos
     public function todos(): array
     {
         $sql = '
@@ -40,9 +38,7 @@ final class Pedido
         return $this->db->query($sql)->fetchAll();
     }
 
-    /**
-     * Busca um pedido pelo ID.
-     */
+    //Busca pelo Id
     public function buscarPorId(int $id): ?array
     {
         $sql = '
@@ -67,9 +63,7 @@ final class Pedido
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Busca os pedidos de um cliente.
-     */
+    //Buscar o produto por cliente
     public function porCliente(int $idCliente): array
     {
         $sql = '
@@ -92,9 +86,7 @@ final class Pedido
         return $stmt->fetchAll();
     }
 
-    /**
-     * Registra um novo pedido.
-     */
+    //Registrar novo pedido
     public function criar(
         ?int $idCliente,
         float $total,
@@ -128,9 +120,7 @@ final class Pedido
         return (int) $this->db->lastInsertId();
     }
 
-    /**
-     * Atualiza o status de um pedido.
-     */
+    //Atualizar um estado de pedido
     public function atualizarStatus(
         int $idPedido,
         string $status

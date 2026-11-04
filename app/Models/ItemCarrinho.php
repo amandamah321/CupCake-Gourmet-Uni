@@ -16,9 +16,7 @@ final class ItemCarrinho
         $this->db = Database::getConnection();
     }
 
-    /**
-     * Lista os produtos de um carrinho.
-     */
+    //listar os produtos do carrinho
     public function todosPorCarrinho(int $idCarrinho): array
     {
         $sql = '
@@ -45,9 +43,7 @@ final class ItemCarrinho
         return $stmt->fetchAll();
     }
 
-    /**
-     * Busca um item específico dentro de um carrinho.
-     */
+    //Buscar um item especifico no carrinho
     public function buscarProduto(
         int $idCarrinho,
         int $idProduto
@@ -74,9 +70,7 @@ final class ItemCarrinho
         return $stmt->fetch() ?: null;
     }
 
-    /**
-     * Adiciona um produto ao carrinho.
-     */
+    //Add profuto no carrinho
     public function adicionar(
         int $idCarrinho,
         int $idProduto,
@@ -110,9 +104,7 @@ final class ItemCarrinho
         return (int) $this->db->lastInsertId();
     }
 
-    /**
-     * Atualiza a quantidade de um item.
-     */
+    //Atualizar qtd no carrinho
     public function atualizarQuantidade(
         int $idItem,
         int $quantidade
@@ -133,9 +125,7 @@ final class ItemCarrinho
         return $stmt->rowCount() > 0;
     }
 
-    /**
-     * Remove um item do carrinho.
-     */
+    //Remover item do carrinho
     public function remover(int $idItem): bool
     {
         $sql = '
