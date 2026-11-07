@@ -21,6 +21,16 @@ $caminho = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
 try {
     $acao = $rotas[$metodo][$caminho] ?? null;
 
+    if (
+        $acao === null &&
+        $metodo === 'GET' &&
+        preg_match('#^/produto/([1-9][0-9]*)$#', $caminho, $matches)
+    ) {
+        $acao = static function () use ($matches): void {
+            (new \App\Controllers\ProdutoController())->mostrar((int) $matches[1]);
+        };
+    }
+
     if ($acao === null) {
         http_response_code(404);
         echo 'Página não encontrada.';
