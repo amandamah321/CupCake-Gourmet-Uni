@@ -18,6 +18,12 @@ return [
         '/cardapio' => function (): void {
             (new CatalogoController())->index();
         },
+
+        '/carrinho' => function (): void {
+            $dados = (new CarrinhoController())->index();
+
+            View::render('carrinho/index', $dados, 'Meu Carrinho');
+        },
     ],
 
     'POST' => [
@@ -45,6 +51,45 @@ return [
             header('Location: /cardapio');
             exit;
         },
+
+        '/carrinho/atualizar' => function (): void {
+            $idItem = filter_input(INPUT_POST, 'id_item_carrinho', FILTER_VALIDATE_INT);
+            $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
+            $token = $_POST['_csrf_token'] ?? null;
+
+            if (!is_string($token)) {
+                throw new RuntimeException('Token de segurança inválido.');
+            }
+
+            (new CarrinhoController())->atualizar(
+                $idItem !== false && $idItem !== null ? $idItem : 0,
+                $quantidade !== false && $quantidade !== null ? $quantidade : 0,
+                $token
+            );
+
+            $_SESSION['mensagem'] = 'Carrinho atualizado com sucesso!';
+
+            header('Location: /carrinho');
+            exit;
+        },
+
+        '/carrinho/remover' => function (): void {
+            $idItem = filter_input(INPUT_POST, 'id_item_carrinho', FILTER_VALIDATE_INT);
+            $token = $_POST['_csrf_token'] ?? null;
+
+            if (!is_string($token)) {
+                throw new RuntimeException('Token de segurança inválido.');
+            }
+
+            (new CarrinhoController())->remover(
+                $idItem !== false && $idItem !== null ? $idItem : 0,
+                $token
+            );
+
+            $_SESSION['mensagem'] = 'Produto removido do carrinho!';
+
+            header('Location: /carrinho');
+            exit;
+        },
     ],
 ];
-

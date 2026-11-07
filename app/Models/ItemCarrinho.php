@@ -138,4 +138,18 @@ final class ItemCarrinho
 
         return $stmt->rowCount() > 0;
     }
+
+    public function quantidadeTotalPorCarrinho(int $idCarrinho): int
+    {
+        $sql = '
+        SELECT COALESCE(SUM(quantidade), 0)
+        FROM item_carrinho
+        WHERE id_carrinho = :id_carrinho
+    ';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id_carrinho' => $idCarrinho]);
+
+        return (int) $stmt->fetchColumn();
+    }
 }

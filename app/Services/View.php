@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\ItemCarrinho;
 use RuntimeException;
 
 final class View
@@ -19,6 +20,17 @@ final class View
 
         if (!is_file($caminhoView)) {
             throw new RuntimeException('Página não encontrada.');
+        }
+
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        $quantidadeCarrinho = 0;
+
+        if (isset($_SESSION['id_carrinho'])) {
+            $quantidadeCarrinho = (new ItemCarrinho())
+                ->quantidadeTotalPorCarrinho((int) $_SESSION['id_carrinho']);
         }
 
         extract($dados, EXTR_SKIP);
