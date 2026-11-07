@@ -45,6 +45,18 @@ final class GatewaySimulado
         ];
     }
 
+    //Gerar uma cobranca PIX simulada sem aprovar o pagamento
+    public function gerarPixPendente(): array
+    {
+        return [
+            'aprovado' => false,
+            'status' => 'PENDENTE',
+            'referencia' => 'SIM-PIX-' . strtoupper(bin2hex(random_bytes(4))),
+            'codigo_pix' => 'PIX-SIMULADO-' . strtoupper(bin2hex(random_bytes(8))),
+            'mensagem' => 'Aguardando confirmacao do pagamento PIX.',
+        ];
+    }
+
     //Simular um pagamento com PIX (nao faz pagamento real)
     public function pagarComPix(): array
     {

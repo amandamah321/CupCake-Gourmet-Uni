@@ -1,26 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
+  //Controlar menu responsivo
   const botaoMenu = document.querySelector("[data-menu-toggle]");
   const menu = document.querySelector("#menu");
 
-  if (!botaoMenu || !menu) {
-    return;
+  if (botaoMenu && menu) {
+    botaoMenu.addEventListener("click", () => {
+      const aberto = menu.classList.toggle("aberto");
+
+      botaoMenu.setAttribute("aria-expanded", String(aberto));
+      botaoMenu.setAttribute(
+        "aria-label",
+        aberto ? "Fechar menu" : "Abrir menu",
+      );
+
+      botaoMenu.textContent = aberto ? "✕" : "☰";
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.remove("aberto");
+        botaoMenu.setAttribute("aria-expanded", "false");
+        botaoMenu.setAttribute("aria-label", "Abrir menu");
+        botaoMenu.textContent = "☰";
+      });
+    });
   }
 
-  botaoMenu.addEventListener("click", () => {
-    const aberto = menu.classList.toggle("aberto");
+  //Controlar campos de pagamento
+  const metodosPagamento = document.querySelectorAll("[data-metodo-pagamento]");
+  const camposCartao = document.querySelector("[data-campos-cartao]");
 
-    botaoMenu.setAttribute("aria-expanded", String(aberto));
-    botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+  if (metodosPagamento.length && camposCartao) {
+    const atualizarPagamento = () => {
+      const cartaoSelecionado = document.querySelector(
+        '[data-metodo-pagamento][value="CARTAO"]:checked',
+      );
 
-    botaoMenu.textContent = aberto ? "✕" : "☰";
-  });
+      camposCartao.hidden = !cartaoSelecionado;
 
-  menu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu.classList.remove("aberto");
-      botaoMenu.setAttribute("aria-expanded", "false");
-      botaoMenu.setAttribute("aria-label", "Abrir menu");
-      botaoMenu.textContent = "☰";
+      camposCartao.querySelectorAll("input").forEach((campo) => {
+        campo.disabled = !cartaoSelecionado;
+        campo.required = Boolean(cartaoSelecionado);
+      });
+    };
+
+    metodosPagamento.forEach((metodo) => {
+      metodo.addEventListener("change", atualizarPagamento);
     });
-  });
+
+    atualizarPagamento();
+  }
 });

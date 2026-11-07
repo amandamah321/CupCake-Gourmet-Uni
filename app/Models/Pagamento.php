@@ -48,6 +48,28 @@ final class Pagamento
         ]);
     }
 
+    //Atualizar o status de um pagamento
+    public function atualizarStatus(
+        int $idPedido,
+        string $status
+    ): bool {
+        $sql = '
+            UPDATE pagamento
+            SET status = :status
+            WHERE id_pedido = :id_pedido
+              AND status = "PENDENTE"
+        ';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            'status' => $status,
+            'id_pedido' => $idPedido,
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
     //Buscar um pagamento de um pedido
     public function porPedido(int $idPedido): ?array
     {

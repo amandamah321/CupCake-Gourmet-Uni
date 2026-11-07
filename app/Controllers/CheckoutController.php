@@ -139,6 +139,50 @@ final class CheckoutController
             unset($_SESSION['id_carrinho']);
         }
 
+        if (!empty($resultado['aguardando_pix'])) {
+            $_SESSION['pedido_pix_pendente'] = (int) $resultado['id_pedido'];
+            $_SESSION['carrinho_pix_pendente'] = (int) $_SESSION['id_carrinho'];
+            $resultado['csrf_token'] = Csrf::gerarToken();
+        }
+
+        return $resultado;
+    }
+
+    //Confirmar o pagamento PIX
+    public function confirmarPix(array $dados): array
+    {
+        $token = $dados['_csrf_token'] ?? null;
+
+        if (!is_string($token)) {
+            throw new RuntimeException('Token de seguranca invalido.');
+        }
+
+        Csrf::validarToken($token);
+
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        $idPedido = (int) ($_SESSION['pedido_pix_pendente'] ?? 0);
+        $idCarrinho = (int) ($_SESSION['carrinho_pix_pendente'] ?? 0);
+
+        if ($idPedido <= 0 || $idCarrinho <= 0) {
+            throw new RuntimeException('Pedido ou carrinho PIX pendente nao encontrado.');
+        }
+
+        $resultado = $this->checkoutService->confirmarPix(
+            $idPedido,
+            $idCarrinho
+        );
+
+        if ($resultado['sucesso']) {
+            unset(
+                $_SESSION['id_carrinho'],
+                $_SESSION['pedido_pix_pendente'],
+                $_SESSION['carrinho_pix_pendente']
+            );
+        }
+
         return $resultado;
     }
 }

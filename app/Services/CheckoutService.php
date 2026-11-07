@@ -45,6 +45,81 @@ final class CheckoutService
         $this->gateway = new GatewaySimulado();
     }
 
+    //Confirmar um pagamento PIX simulado
+    public function confirmarPix(
+        int $idPedido,
+        int $idCarrinho
+    ): array {
+        $this->db->beginTransaction();
+
+        try {
+            $pedidoExistente = $this->pedido->buscarPorId($idPedido);
+            $pagamentoExistente = $this->pagamento->porPedido($idPedido);
+            $carrinhoExistente = $this->carrinho->buscarPorId($idCarrinho);
+
+            if (!$carrinhoExistente) {
+                throw new RuntimeException('Carrinho nao encontrado.');
+            }
+
+            if (
+                !$pedidoExistente ||
+                !$pagamentoExistente ||
+                $pagamentoExistente['metodo'] !== 'PIX' ||
+                $pagamentoExistente['status'] !== 'PENDENTE' ||
+                $pedidoExistente['status'] !== 'PENDENTE'
+            ) {
+                throw new RuntimeException('Pedido PIX pendente nao encontrado.');
+            }
+
+            //Atualizar o pagamento
+            $pagamentoAtualizado = $this->pagamento->atualizarStatus(
+                $idPedido,
+                'APROVADO'
+            );
+
+            if (!$pagamentoAtualizado) {
+                throw new RuntimeException('Nao foi possivel confirmar o pagamento.');
+            }
+
+            //Confirmar o pedido
+            $pedidoAtualizado = $this->pedido->atualizarStatus(
+                $idPedido,
+                'CONFIRMADO'
+            );
+
+            if (!$pedidoAtualizado) {
+                throw new RuntimeException('Nao foi possivel confirmar o pedido.');
+            }
+
+            //Esvaziar o carrinho
+            $stmt = $this->db->prepare(
+                'DELETE FROM item_carrinho
+             WHERE id_carrinho = :id'
+            );
+
+            $stmt->execute(['id' => $idCarrinho]);
+
+            $this->db->commit();
+
+            return [
+                'sucesso' => true,
+                'id_pedido' => $idPedido,
+                'total' => (float) $pedidoExistente['total'],
+                'metodo' => 'PIX',
+                'status' => 'CONFIRMADO',
+                'referencia' => $pagamentoExistente['referencia_transacao'],
+                'codigo_pix' => null,
+                'mensagem' => 'Pedido confirmado com sucesso!',
+            ];
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            throw $exception;
+        }
+    }
+
     //Finalizar a compra e pagamento SIMULADO
     public function finalizar(
         int $idCarrinho,
@@ -159,16 +234,40 @@ final class CheckoutService
                 );
             }
 
-            //Processar o pagamento simulado
-            if ($metodo === 'CARTAO') {
-                $resultadoPagamento = $this->gateway->pagarComCartao(
-                    $numeroCartao,
-                    $validade,
-                    $cvv
+            //Gerar PIX pendente sem confirmar o pedido
+            if ($metodo === 'PIX') {
+                $resultadoPagamento = $this->gateway->gerarPixPendente();
+
+                $this->pagamento->registrar(
+                    $idPedido,
+                    'PIX',
+                    'PENDENTE',
+                    $resultadoPagamento['referencia']
                 );
-            } else {
-                $resultadoPagamento = $this->gateway->pagarComPix();
+
+                $this->db->commit();
+
+                return [
+                    'sucesso' => false,
+                    'aguardando_pix' => true,
+                    'id_pedido' => $idPedido,
+                    'subtotal' => $subtotal,
+                    'taxa_entrega' => self::TAXA_ENTREGA,
+                    'total' => $total,
+                    'metodo' => 'PIX',
+                    'status' => 'PENDENTE',
+                    'referencia' => $resultadoPagamento['referencia'],
+                    'codigo_pix' => $resultadoPagamento['codigo_pix'],
+                    'mensagem' => $resultadoPagamento['mensagem'],
+                ];
             }
+
+            //Processar pagamento com cartao
+            $resultadoPagamento = $this->gateway->pagarComCartao(
+                $numeroCartao,
+                $validade,
+                $cvv
+            );
 
             //Quando transicao recusada, reverter toda a operação
             if (!$resultadoPagamento['aprovado']) {
@@ -224,7 +323,6 @@ final class CheckoutService
                 'codigo_pix' => $resultadoPagamento['codigo_pix'] ?? null,
                 'mensagem' => 'Pedido confirmado com sucesso!',
             ];
-
         } catch (Throwable $exception) {
             if ($this->db->inTransaction()) {
                 $this->db->rollBack();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Controllers\CarrinhoController;
 use App\Controllers\CatalogoController;
 use App\Controllers\HomeController;
+use App\Controllers\CheckoutController;
 use App\Services\View;
 
 return [
@@ -24,6 +25,24 @@ return [
 
             View::render('carrinho/index', $dados, 'Meu Carrinho');
         },
+
+        '/checkout' => function (): void {
+            try {
+                $dados = (new CheckoutController())->index();
+
+                View::render('checkout/index', $dados, 'Finalizar pedido');
+            } catch (RuntimeException $erro) {
+                if (session_status() !== PHP_SESSION_ACTIVE) {
+                    session_start();
+                }
+
+                $_SESSION['mensagem'] = $erro->getMessage();
+
+                header('Location: /carrinho');
+                exit;
+            }
+        },
+
     ],
 
     'POST' => [
@@ -90,6 +109,43 @@ return [
 
             header('Location: /carrinho');
             exit;
+        },
+
+        '/checkout/finalizar' => function (): void {
+            $dados = (new CheckoutController())->finalizar($_POST);
+
+            //Exibir a tela de pagamento PIX
+            if (!empty($dados['aguardando_pix'])) {
+                View::render(
+                    'checkout/pix',
+                    $dados,
+                    'Pagamento via PIX'
+                );
+
+                return;
+            }
+
+            $titulo = $dados['sucesso']
+                ? 'Pedido confirmado'
+                : 'Pagamento não aprovado';
+
+            View::render(
+                'checkout/resultado',
+                $dados,
+                $titulo,
+                $dados['mensagem'] ?? ''
+            );
+        },
+
+        '/checkout/confirmar-pix' => function (): void {
+            $dados = (new CheckoutController())->confirmarPix($_POST);
+
+            View::render(
+                'checkout/resultado',
+                $dados,
+                'Pedido confirmado',
+                $dados['mensagem'] ?? ''
+            );
         },
     ],
 ];
