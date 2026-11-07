@@ -1647,79 +1647,121 @@ textarea:focus-visible {
   width: 100%;
 }
 
-@media (max-width: 500px) {
-  .checkout-pix__card {
-    padding: 25px 18px;
-  }
+/*Pagina sobre nos - nossa historia*/
 
-  .checkout-pix__pattern {
-    width: 180px;
-    height: 180px;
-  }
+.sobre-historia {
+  max-width: 1100px;
+  margin: 55px auto;
+  padding: 35px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+  background: #fff0f3;
+  border-radius: 22px;
 }
 
-@media (max-width: 380px) {
-  .catalogo-imagem {
-    width: 34%;
-    min-width: 100px;
-  }
-
-  .catalogo-card-conteudo {
-    padding: 10px;
-  }
+.sobre-historia-imagem {
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 18px;
 }
 
-@media (max-width: 719px) {
-  .produto-detalhes {
-    margin: 25px auto;
-  }
-
-  .produto-detalhes-conteudo {
-    grid-template-columns: 1fr;
-    gap: 25px;
-    padding: 18px;
-  }
-
-  .produto-detalhes-imagem img {
-    max-height: 320px;
-  }
+.sobre-historia-imagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-@media (max-width: 719px) {
-  .produto-erro {
-    margin: 35px auto;
-    padding: 40px 22px;
-  }
-
-  .produto-erro h1 {
-    font-size: 1.5rem;
-  }
+.sobre-historia-conteudo {
+  background: transparent;
+  padding: 20px;
+  border-radius: 18px;
 }
 
-@media (max-width: 600px) {
-  .carrinho {
-    padding: 25px 16px 40px;
-  }
-
-  .carrinho-vazio {
-    padding: 30px 20px;
-  }
+.sobre-subtitulo {
+  color: #f23f75;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-@media (max-width: 600px) {
-  .carrinho-item {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .carrinho-item > img {
-    width: 90px;
-    height: 90px;
-    flex-basis: 90px;
-  }
+.sobre-historia-conteudo h1 {
+  color: #b92d59;
+  font-size: 34px;
+  margin: 12px 0 22px;
 }
+
+.sobre-historia-conteudo p {
+  color: #555;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+/*Pagina sobre nos - nossos valores*/
+
+.sobre-valores {
+  max-width: 1100px;
+  margin: 45px auto;
+  padding: 0 20px;
+}
+
+.sobre-valores h2 {
+  color: #29232a;
+  font-size: 26px;
+  margin-bottom: 22px;
+}
+
+.sobre-valores-lista {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.sobre-valor-card {
+  background: #fff0f3;
+  border: 1px solid #f8dce5;
+  border-radius: 16px;
+  padding: 28px 18px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.04);
+}
+
+.sobre-valor-icone {
+  display: block;
+  color: #f23f75;
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.sobre-valor-card h3 {
+  color: #383038;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.sobre-valor-icone svg {
+  width: 42px;
+  height: 42px;
+  display: block;
+  margin: 0 auto;
+}
+
+/*Para tablet e mobile*/
 
 @media (max-width: 800px) {
+  .checkout-conteudo {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-resumo {
+    position: static;
+  }
+
   .carrinho-conteudo {
     grid-template-columns: 1fr;
   }
@@ -1733,17 +1775,93 @@ textarea:focus-visible {
   }
 }
 
-@media (max-width: 800px) {
-  .checkout-conteudo {
-    grid-template-columns: 1fr;
+@media (max-width: 719px) {
+  .produto-erro {
+    margin: 35px auto;
+    padding: 40px 22px;
   }
 
-  .checkout-resumo {
-    position: static;
+  .produto-erro h1 {
+    font-size: 1.5rem;
+  }
+
+  .produto-detalhes {
+    margin: 25px auto;
+  }
+
+  .produto-detalhes-conteudo {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 18px;
+  }
+
+  .produto-detalhes-imagem img {
+    max-height: 320px;
+  }
+
+  .sobre-valores-lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .sobre-valor-card {
+    padding: 22px 12px;
+  }
+
+  .sobre-valor-card h3 {
+    font-size: 14px;
+  }
+
+  .sobre-historia {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin: 30px auto;
+  }
+
+  .sobre-historia-imagem {
+    height: 300px;
+  }
+
+  .sobre-historia-conteudo {
+    padding: 25px;
+  }
+
+  .sobre-historia-conteudo h1 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carrinho {
+    padding: 25px 16px 40px;
+  }
+
+  .carrinho-vazio {
+    padding: 30px 20px;
+  }
+
+  .carrinho-item {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .carrinho-item > img {
+    width: 90px;
+    height: 90px;
+    flex-basis: 90px;
   }
 }
 
 @media (max-width: 500px) {
+  .checkout-pix__card {
+    padding: 25px 18px;
+  }
+
+  .checkout-pix__pattern {
+    width: 180px;
+    height: 180px;
+  }
+
   .checkout {
     padding: 25px 16px 40px;
   }
@@ -1755,5 +1873,16 @@ textarea:focus-visible {
 
   .checkout-pagamentos {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .catalogo-imagem {
+    width: 34%;
+    min-width: 100px;
+  }
+
+  .catalogo-card-conteudo {
+    padding: 10px;
   }
 }

@@ -6,6 +6,7 @@ use App\Controllers\CarrinhoController;
 use App\Controllers\CatalogoController;
 use App\Controllers\HomeController;
 use App\Controllers\CheckoutController;
+use App\Controllers\SobreController;
 use App\Services\View;
 
 return [
@@ -24,6 +25,12 @@ return [
             $dados = (new CarrinhoController())->index();
 
             View::render('carrinho/index', $dados, 'Meu Carrinho');
+        },
+
+        '/sobre' => function (): void {
+            $dados = (new SobreController())->index();
+
+            View::render('sobre/index', $dados, 'Sobre Nós');
         },
 
         '/checkout' => function (): void {
