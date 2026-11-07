@@ -13,16 +13,14 @@ $formatarPreco = static function ($preco): string {
     <nav class="catalogo-filtros" aria-label="Filtrar produtos por categoria">
         <a
             href="/cardapio"
-            class="<?= $categoriaSelecionada === null ? 'ativo' : '' ?>"
-        >
+            class="<?= $categoriaSelecionada === null ? 'ativo' : '' ?>">
             Todos
         </a>
 
         <?php foreach ($categorias as $categoria): ?>
             <a
                 href="/cardapio?categoria=<?= (int) $categoria['id_categoria'] ?>"
-                class="<?= $categoriaSelecionada !== null && (int) $categoriaSelecionada['id_categoria'] === (int) $categoria['id_categoria'] ? 'ativo' : '' ?>"
-            >
+                class="<?= $categoriaSelecionada !== null && (int) $categoriaSelecionada['id_categoria'] === (int) $categoria['id_categoria'] ? 'ativo' : '' ?>">
                 <?= htmlspecialchars($categoria['nome'], ENT_QUOTES, 'UTF-8') ?>
             </a>
         <?php endforeach; ?>
@@ -44,7 +42,7 @@ $formatarPreco = static function ($preco): string {
             $produtosCategoria = array_filter(
                 $produtos,
                 static fn($produto) =>
-                    (int) $produto['id_categoria'] === (int) $categoria['id_categoria']
+                (int) $produto['id_categoria'] === (int) $categoria['id_categoria']
             );
 
             if (empty($produtosCategoria)) {
@@ -61,8 +59,7 @@ $formatarPreco = static function ($preco): string {
                             <img
                                 src="<?= htmlspecialchars($produto['imagem_url'], ENT_QUOTES, 'UTF-8') ?>"
                                 alt="<?= htmlspecialchars($produto['nome'], ENT_QUOTES, 'UTF-8') ?>"
-                                class="catalogo-imagem"
-                            >
+                                class="catalogo-imagem">
 
                             <div class="catalogo-card-conteudo">
                                 <h3><?= htmlspecialchars($produto['nome'], ENT_QUOTES, 'UTF-8') ?></h3>
@@ -75,18 +72,22 @@ $formatarPreco = static function ($preco): string {
                                     <?= $formatarPreco($produto['preco']) ?>
                                 </strong>
 
+                                <a
+                                    href="/produto/<?= (int) $produto['id_produto'] ?>"
+                                    class="produto-link-detalhes">
+                                    Ver detalhes
+                                </a>
+
                                 <form method="POST" action="/carrinho/adicionar">
                                     <input
                                         type="hidden"
                                         name="_csrf_token"
-                                        value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>"
-                                    >
+                                        value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
 
                                     <input
                                         type="hidden"
                                         name="id_produto"
-                                        value="<?= (int) $produto['id_produto'] ?>"
-                                    >
+                                        value="<?= (int) $produto['id_produto'] ?>">
 
                                     <input type="hidden" name="quantidade" value="1">
 

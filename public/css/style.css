@@ -1002,6 +1002,21 @@ textarea:focus-visible {
   }
 }
 
+/* Link para detalhes do produto */
+.produto-link-detalhes {
+  display: block;
+  margin: 12px 0;
+  color: #b92d59;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.produto-link-detalhes:hover {
+  color: #f23f75;
+  text-decoration: underline;
+}
+
 /* Produto nao encontrado */
 .produto-erro {
   max-width: 650px;
