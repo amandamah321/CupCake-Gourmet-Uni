@@ -90,5 +90,55 @@ final class CheckoutController
         Csrf::validarToken($token);
 
         $idCarrinho = $this->obterIdCarrinho();
+
+        $nome = trim((string) ($dados['nome'] ?? ''));
+        $email = trim((string) ($dados['email'] ?? ''));
+
+        $telefone = isset($dados['telefone'])
+            ? trim((string) $dados['telefone'])
+            : null;
+
+        $metodo = strtoupper(trim(
+            (string) ($dados['metodo'] ?? '')
+        ));
+
+        $cep = isset($dados['cep'])
+            ? trim((string) $dados['cep'])
+            : null;
+
+        $comentario = isset($dados['comentario'])
+            ? trim((string) $dados['comentario'])
+            : null;
+
+        $numeroCartao = isset($dados['numero_cartao'])
+            ? trim((string) $dados['numero_cartao'])
+            : null;
+
+        $validade = isset($dados['validade'])
+            ? trim((string) $dados['validade'])
+            : null;
+
+        $cvv = isset($dados['cvv'])
+            ? trim((string) $dados['cvv'])
+            : null;
+
+        $resultado = $this->checkoutService->finalizar(
+            $idCarrinho,
+            $nome,
+            $email,
+            $telefone,
+            $metodo,
+            $cep,
+            $comentario,
+            $numeroCartao,
+            $validade,
+            $cvv
+        );
+
+        if ($resultado['sucesso']) {
+            unset($_SESSION['id_carrinho']);
+        }
+
+        return $resultado;
     }
 }
