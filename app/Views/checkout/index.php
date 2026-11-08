@@ -68,7 +68,8 @@ $formatarPreco = static function ($preco): string {
                             name="cep"
                             maxlength="9"
                             placeholder="00000-000"
-                            autocomplete="postal-code">
+                            autocomplete="postal-code"
+                            data-cep>
                     </div>
 
                     <div class="checkout-campo">
@@ -196,14 +197,15 @@ $formatarPreco = static function ($preco): string {
                     <span><?= $formatarPreco($subtotal) ?></span>
                 </div>
 
-                <div class="checkout-resumo-linha">
+                <div class="checkout-resumo-linha" id="linha-entrega" hidden>
                     <span>Entrega</span>
                     <span><?= $formatarPreco($taxa_entrega) ?></span>
                 </div>
-
                 <div class="checkout-resumo-total">
                     <span>Total</span>
-                    <strong><?= $formatarPreco($total) ?></strong>
+                    <strong id="valor-total" data-subtotal="<?= htmlspecialchars((string) $subtotal) ?>">
+                        <?= $formatarPreco($subtotal) ?>
+                    </strong>
                 </div>
 
                 <button type="submit" class="btn btn-bloco">

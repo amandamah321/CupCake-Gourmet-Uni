@@ -50,4 +50,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     atualizarPagamento();
   }
+
+  //Controlar taxa de entrega pelo CEP
+  const campoCep = document.querySelector("[data-cep]");
+  const linhaEntrega = document.querySelector("#linha-entrega");
+  const valorTotal = document.querySelector("#valor-total");
+
+  if (campoCep && linhaEntrega && valorTotal) {
+    const subtotal = Number(valorTotal.dataset.subtotal);
+    const taxaEntrega = 12;
+
+    campoCep.addEventListener("input", () => {
+      const numeros = campoCep.value.replace(/\D/g, "").slice(0, 8);
+
+      campoCep.value =
+        numeros.length > 5
+          ? `${numeros.slice(0, 5)}-${numeros.slice(5)}`
+          : numeros;
+
+      const cepValido = numeros.length === 8;
+
+      linhaEntrega.hidden = !cepValido;
+
+      const total = cepValido ? subtotal + taxaEntrega : subtotal;
+
+      valorTotal.textContent = total.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      });
+    });
+  }
 });
