@@ -13,10 +13,11 @@ final class GatewaySimulado
         string $cvv
     ): array {
         $numero = preg_replace('/\D/', '', $numero) ?? '';
+        $validade = preg_replace('/\D/', '', $validade) ?? '';
 
         if (
             strlen($numero) !== 16 ||
-            !preg_match('/^\d{2}\/\d{2}$/', $validade) ||
+            !preg_match('/^\d{4}$/', $validade) ||
             !preg_match('/^\d{3,4}$/', $cvv)
         ) {
             return [

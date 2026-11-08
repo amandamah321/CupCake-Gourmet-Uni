@@ -1,4 +1,13 @@
 <?php
+
+/* 
+Numero do cartão:4111 1111 1111 1111
+Validade: uma data no futuro, formato MM/AA
+CVV: 123
+
+PAGAMENTO SIMULADO !!
+*/
+
 $formatarPreco = static function ($preco): string {
     return 'R$ ' . number_format((float) $preco, 2, ',', '.');
 };

@@ -15,7 +15,13 @@ class Database
     public static function getConnection(): PDO
     {
         if (self::$connection === null) {
-            $config = require dirname(__DIR__, 2) . '/config/database.php';
+            $ambienteTeste = ($_ENV['APP_ENV'] ?? '') === 'testing';
+
+            $arquivoConfig = $ambienteTeste
+                ? 'database.test.php'
+                : 'database.php';
+
+            $config = require dirname(__DIR__, 2) . '/config/' . $arquivoConfig;
             $db = $config['db'];
 
             $dsn = sprintf(
