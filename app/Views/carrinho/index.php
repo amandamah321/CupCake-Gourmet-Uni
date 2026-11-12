@@ -92,19 +92,18 @@ $formatarPreco = static function ($preco): string {
                 <h2>Resumo do pedido</h2>
 
                 <div class="carrinho-resumo-linha">
-                    <span>Subtotal</span>
+                    <span>Subtotal dos produtos</span>
                     <span><?= $formatarPreco($subtotal) ?></span>
                 </div>
 
-                <div class="carrinho-resumo-linha">
-                    <span>Entrega</span>
-                    <span><?= $formatarPreco($taxa_entrega) ?></span>
+                <div class="carrinho-resumo-total">
+                    <span>Total parcial</span>
+                    <strong><?= $formatarPreco($subtotal) ?></strong>
                 </div>
 
-                <div class="carrinho-resumo-total">
-                    <span>Total</span>
-                    <strong><?= $formatarPreco($total) ?></strong>
-                </div>
+                <p class="carrinho-entrega-info">
+                    A taxa de entrega será adicionada após informar o CEP ao finalizar o pedido
+                </p>
 
                 <a href="/checkout" class="btn btn-bloco">
                     Finalizar pedido

@@ -860,6 +860,24 @@ textarea:focus-visible {
   margin: 0 auto;
 }
 
+.carrinho-entrega-info {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #fff8f5;
+  border: 1px solid #f5dce5;
+  border-radius: 10px;
+  color: #777;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.carrinho-resumo-total {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #f1e3e8;
+}
+
 /* Produto nao encontrado */
 .produto-erro {
   max-width: 650px;
@@ -1531,6 +1549,73 @@ textarea:focus-visible {
   height: 42px;
   display: block;
   margin: 0 auto;
+}
+
+/*estilizar alerta de erro do checkout*/
+.checkout-alerta {
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  background: #fff1f3;
+  border: 1px solid #f5b9c8;
+  border-left: 4px solid #f23f75;
+  border-radius: 10px;
+  color: #b92d59;
+}
+
+.checkout-alerta strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.checkout-alerta p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/*alinhar icones das formas de pagamento*/
+.checkout-pagamento-opcao .checkout-pagamento-conteudo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 12px;
+  text-align: left;
+}
+
+.checkout-pagamento-conteudo > span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  text-align: left;
+}
+
+.checkout-icone-pix,
+.checkout-icone-cartao {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.checkout-icone-pix {
+  color: #32a879;
+}
+
+.checkout-icone-cartao {
+  color: #454545;
+}
+
+.checkout-pagamento-conteudo strong {
+  font-size: 1rem;
+}
+
+.checkout-pagamento-conteudo small {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
 }
 
 /*Para tablet e mobile*/

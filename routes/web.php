@@ -118,31 +118,55 @@ return [
             exit;
         },
 
+
         '/checkout/finalizar' => function (): void {
-            $dados = (new CheckoutController())->finalizar($_POST);
+            $controller = new CheckoutController();
 
-            //Exibir a tela de pagamento PIX
-            if (!empty($dados['aguardando_pix'])) {
+            try {
+                $dados = $controller->finalizar($_POST);
+
+                if (!empty($dados['aguardando_pix'])) {
+                    View::render(
+                        'checkout/pix',
+                        $dados,
+                        'Pagamento via PIX'
+                    );
+
+                    return;
+                }
+
+                $titulo = $dados['sucesso']
+                    ? 'Pedido confirmado'
+                    : 'Pagamento não aprovado';
+
                 View::render(
-                    'checkout/pix',
+                    'checkout/resultado',
                     $dados,
-                    'Pagamento via PIX'
+                    $titulo,
+                    $dados['mensagem'] ?? ''
                 );
+            } catch (RuntimeException $erro) {
+                $dados = $controller->index();
 
-                return;
+                $dados['erro_checkout'] = $erro->getMessage();
+
+                $dados['dados_formulario'] = [
+                    'nome' => $_POST['nome'] ?? '',
+                    'email' => $_POST['email'] ?? '',
+                    'telefone' => $_POST['telefone'] ?? '',
+                    'cep' => $_POST['cep'] ?? '',
+                    'comentario' => $_POST['comentario'] ?? '',
+                    'metodo' => $_POST['metodo'] ?? 'PIX',
+                ];
+
+                View::render(
+                    'checkout/index',
+                    $dados,
+                    'Finalizar pedido'
+                );
             }
-
-            $titulo = $dados['sucesso']
-                ? 'Pedido confirmado'
-                : 'Pagamento não aprovado';
-
-            View::render(
-                'checkout/resultado',
-                $dados,
-                $titulo,
-                $dados['mensagem'] ?? ''
-            );
         },
+
 
         '/checkout/confirmar-pix' => function (): void {
             $dados = (new CheckoutController())->confirmarPix($_POST);

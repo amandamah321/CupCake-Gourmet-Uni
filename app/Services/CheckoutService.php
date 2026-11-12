@@ -138,6 +138,30 @@ final class CheckoutService
         $telefone = $telefone !== null ? trim($telefone) : null;
         $telefone = $telefone === '' ? null : $telefone;
 
+        if ($telefone !== null) {
+            $telefoneNumeros = preg_replace('/\D/', '', $telefone);
+
+            if (
+                $telefoneNumeros === null ||
+                !in_array(strlen($telefoneNumeros), [10, 11], true)
+            ) {
+                throw new RuntimeException(
+                    'Informe um telefone válido com DDD.'
+                );
+            }
+        }
+
+        $cep = $cep !== null ? trim($cep) : '';
+        $cepNumeros = preg_replace('/\D/', '', $cep);
+
+        if ($cepNumeros === null || !preg_match('/^\d{8}$/', $cepNumeros)) {
+            throw new RuntimeException(
+                'Informe um CEP válido para finalizar o pedido.'
+            );
+        }
+
+        $cep = substr($cepNumeros, 0, 5) . '-' . substr($cepNumeros, 5, 3);
+
         if (
             $idCarrinho <= 0 ||
             $nome === '' ||
@@ -195,10 +219,9 @@ final class CheckoutService
             $resultadoCalculo = $this->calculator->calcular($itens);
 
             $subtotal = $resultadoCalculo['total'];
-            $total = round(
-                $subtotal + self::TAXA_ENTREGA,
-                2
-            );
+            $taxaEntrega = self::TAXA_ENTREGA;
+
+            $total = round($subtotal + $taxaEntrega, 2);
 
             // Buscar o cliente pelo e-mail
             $clienteExistente = $this->cliente->buscarPorEmail(

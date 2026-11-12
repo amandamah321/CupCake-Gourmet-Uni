@@ -26,6 +26,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  //Validar e formatar telefone br
+  const campoTelefone = document.querySelector("#telefone");
+
+  if (campoTelefone) {
+    campoTelefone.addEventListener("input", () => {
+      let numeros = campoTelefone.value.replace(/\D/g, "").slice(0, 11);
+
+      if (numeros.length > 10) {
+        numeros = numeros.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+      } else if (numeros.length > 6) {
+        numeros = numeros.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+      } else if (numeros.length > 2) {
+        numeros = numeros.replace(/^(\d{2})(\d+)/, "($1) $2");
+      } else if (numeros.length > 0) {
+        numeros = `(${numeros}`;
+      }
+
+      campoTelefone.value = numeros;
+    });
+  }
+
   //Controlar campos de pagamento
   const metodosPagamento = document.querySelectorAll("[data-metodo-pagamento]");
   const camposCartao = document.querySelector("[data-campos-cartao]");

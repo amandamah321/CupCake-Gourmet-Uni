@@ -26,6 +26,13 @@ $formatarPreco = static function ($preco): string {
             name="_csrf_token"
             value="<?= htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8') ?>">
 
+        <?php if (!empty($erro_checkout)): ?>
+            <div class="checkout-alerta" role="alert">
+                <strong>Não foi possível finalizar o pedido</strong>
+                <p><?= htmlspecialchars($erro_checkout, ENT_QUOTES, 'UTF-8') ?></p>
+            </div>
+        <?php endif; ?>
+
         <div class="checkout-conteudo">
 
             <div class="checkout-dados">
@@ -41,6 +48,8 @@ $formatarPreco = static function ($preco): string {
                             name="nome"
                             maxlength="120"
                             autocomplete="name"
+                            placeholder="Maria da Silva"
+                            value="<?= htmlspecialchars($dados_formulario['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                             required>
                     </div>
 
@@ -52,6 +61,8 @@ $formatarPreco = static function ($preco): string {
                             name="email"
                             maxlength="150"
                             autocomplete="email"
+                            placeholder="maria@email.com"
+                            value="<?= htmlspecialchars($dados_formulario['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                             required>
                     </div>
 
@@ -61,8 +72,11 @@ $formatarPreco = static function ($preco): string {
                             type="tel"
                             id="telefone"
                             name="telefone"
-                            maxlength="30"
-                            autocomplete="tel">
+                            maxlength="15"
+                            placeholder="(00) 00000-0000"
+                            autocomplete="tel"
+                            value="<?= htmlspecialchars($dados_formulario['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                            inputmode="numeric">
                     </div>
                 </section>
 
@@ -77,6 +91,7 @@ $formatarPreco = static function ($preco): string {
                             name="cep"
                             maxlength="9"
                             placeholder="00000-000"
+                            value="<?= htmlspecialchars($dados_formulario['cep'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                             autocomplete="postal-code"
                             data-cep>
                     </div>
@@ -86,8 +101,8 @@ $formatarPreco = static function ($preco): string {
                         <textarea
                             id="comentario"
                             name="comentario"
-                            rows="3"
-                            placeholder="Alguma informação adicional?"></textarea>
+                            rows="4"
+                            maxlength="500"><?= htmlspecialchars($dados_formulario['comentario'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                     </div>
                 </section>
 
@@ -102,10 +117,18 @@ $formatarPreco = static function ($preco): string {
                                 name="metodo"
                                 value="PIX"
                                 data-metodo-pagamento
-                                checked>
-                            <span>
-                                <strong>PIX</strong>
-                                <small>Pagamento instantâneo</small>
+                                <?= ($dados_formulario['metodo'] ?? 'PIX') === 'PIX' ? 'checked' : '' ?>>
+                            <span class="checkout-pagamento-conteudo">
+                                <svg class="checkout-icone-pix" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 3 17 8 12 13 7 8 12 3Z" fill="currentColor" />
+                                    <path d="M12 11 17 16 12 21 7 16 12 11Z" fill="currentColor" />
+                                    <path d="M3 12 8 7 13 12 8 17 3 12Z" fill="currentColor" />
+                                    <path d="M11 12 16 7 21 12 16 17 11 12Z" fill="currentColor" />
+                                </svg>
+                                <span>
+                                    <strong>PIX</strong>
+                                    
+                                </span>
                             </span>
                         </label>
 
@@ -114,10 +137,18 @@ $formatarPreco = static function ($preco): string {
                                 type="radio"
                                 name="metodo"
                                 value="CARTAO"
-                                data-metodo-pagamento>
-                            <span>
-                                <strong>Cartão</strong>
-                                <small>Crédito ou débito</small>
+                                data-metodo-pagamento
+                                <?= ($dados_formulario['metodo'] ?? 'PIX') === 'CARTAO' ? 'checked' : '' ?>>
+                            <span class="checkout-pagamento-conteudo">
+                                <svg class="checkout-icone-cartao" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <rect x="2.5" y="5" width="19" height="14" rx="2.5" stroke="currentColor" stroke-width="1.8" />
+                                    <path d="M3 10h18" stroke="currentColor" stroke-width="1.8" />
+                                    <path d="M6 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                                </svg>
+                                <span>
+                                    <strong>Cartão</strong>
+                                    
+                                </span>
                             </span>
                         </label>
 

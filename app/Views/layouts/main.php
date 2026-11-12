@@ -23,9 +23,9 @@ $quantidadeCarrinho = $quantidadeCarrinho ?? 0;
 <body>
 
     <div class="barra-superior">
-        Cupcakes artesanais feitos com carinho
         <span>•</span>
-        Consulte as opções de entrega
+        Aproveite nossa taxa de entrega fixa de R$ 12,00
+        <span>•</span>
     </div>
 
     <header class="topo">
