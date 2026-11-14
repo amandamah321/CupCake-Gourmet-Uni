@@ -44,9 +44,6 @@ $formatarPreco = static function ($preco): string {
 
                             <p><?= $formatarPreco($item['preco_unitario']) ?> por unidade</p>
 
-                            <strong>
-                                <?= $formatarPreco($item['subtotal']) ?>
-                            </strong>
                         </div>
 
                         <div class="carrinho-item-acoes">

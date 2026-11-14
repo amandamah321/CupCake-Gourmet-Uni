@@ -143,10 +143,10 @@ final class CheckoutService
 
             if (
                 $telefoneNumeros === null ||
-                !in_array(strlen($telefoneNumeros), [10, 11], true)
+                !preg_match('/^[1-9]{2}9[0-9]{8}$/', $telefoneNumeros)
             ) {
                 throw new RuntimeException(
-                    'Informe um telefone válido com DDD.'
+                    'Informe um celular válido com DDD + 9 dígitos.'
                 );
             }
         }

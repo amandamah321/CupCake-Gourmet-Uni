@@ -67,7 +67,7 @@ $formatarPreco = static function ($preco): string {
                     </div>
 
                     <div class="checkout-campo">
-                        <label for="telefone">Telefone</label>
+                        <label for="telefone">Telefone celular</label>
                         <input
                             type="tel"
                             id="telefone"
